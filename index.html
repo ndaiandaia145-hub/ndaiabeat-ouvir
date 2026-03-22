@@ -22,6 +22,7 @@ body {
     padding: 20px;
     border-radius: 15px;
     text-align: center;
+    box-shadow: 0 0 20px rgba(255,180,0,0.5);
 }
 button {
     padding: 15px;
@@ -30,6 +31,10 @@ button {
     border: none;
     border-radius: 50%;
     cursor: pointer;
+    transition: transform 0.2s;
+}
+button:hover {
+    transform: scale(1.1);
 }
 audio {
     display: none; /* esconde o player nativo */
@@ -44,7 +49,7 @@ audio {
     <button id="playBtn">▶</button>
 
     <audio id="audio">
-        <source src="2026-2026-2.mp3" type="audio/mpeg">
+        <source src="https://ndaiandaia145-hub.github.io/ndaiabeat-ouvir/2026-2026-2.mp3" type="audio/mpeg">
         Seu navegador não suporta áudio.
     </audio>
 </div>
