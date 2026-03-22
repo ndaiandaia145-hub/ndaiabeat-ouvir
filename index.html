@@ -36,8 +36,28 @@ button {
 button:hover {
     transform: scale(1.1);
 }
+.progress-container {
+    width: 100%;
+    background: #333;
+    height: 8px;
+    border-radius: 4px;
+    margin-top: 20px;
+    cursor: pointer;
+}
+.progress {
+    background: #ffb400;
+    height: 100%;
+    width: 0%;
+    border-radius: 4px;
+}
+.time {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    margin-top: 5px;
+}
 audio {
-    display: none; /* esconde o player nativo */
+    display: none; /* player nativo escondido */
 }
 </style>
 </head>
@@ -48,8 +68,16 @@ audio {
     <h2>Ndaiabeat</h2>
     <button id="playBtn">▶</button>
 
+    <div class="progress-container" id="progressContainer">
+        <div class="progress" id="progress"></div>
+    </div>
+    <div class="time">
+        <span id="current">0:00</span>
+        <span id="duration">0:00</span>
+    </div>
+
     <audio id="audio">
-        <source src="https://ndaiandaia145-hub.github.io/ndaiabeat-ouvir/2026-2026-2.mp3" type="audio/mpeg">
+        <source src="2026-2026-2.mp3" type="audio/mpeg">
         Seu navegador não suporta áudio.
     </audio>
 </div>
@@ -57,19 +85,44 @@ audio {
 <script>
 const audio = document.getElementById("audio");
 const btn = document.getElementById("playBtn");
+const progress = document.getElementById("progress");
+const progressContainer = document.getElementById("progressContainer");
+const currentTimeEl = document.getElementById("current");
+const durationEl = document.getElementById("duration");
 
-btn.addEventListener("click", function () {
+// Play / Pause
+btn.addEventListener("click", () => {
     if (audio.paused) {
-        audio.play().then(() => {
-            btn.textContent = "⏸";
-        }).catch(err => {
-            console.log("Erro ao tentar reproduzir:", err);
-            alert("Clique diretamente no player se o áudio não tocar.");
-        });
+        audio.play();
+        btn.textContent = "⏸";
     } else {
         audio.pause();
         btn.textContent = "▶";
     }
+});
+
+// Atualiza progresso e tempo
+audio.addEventListener("timeupdate", () => {
+    const percent = (audio.currentTime / audio.duration) * 100;
+    progress.style.width = `${percent}%`;
+
+    let curMin = Math.floor(audio.currentTime / 60);
+    let curSec = Math.floor(audio.currentTime % 60);
+    if (curSec < 10) curSec = "0" + curSec;
+    currentTimeEl.textContent = `${curMin}:${curSec}`;
+
+    let durMin = Math.floor(audio.duration / 60) || 0;
+    let durSec = Math.floor(audio.duration % 60) || 0;
+    if (durSec < 10) durSec = "0" + durSec;
+    durationEl.textContent = `${durMin}:${durSec}`;
+});
+
+// Clicar na barra de progresso
+progressContainer.addEventListener("click", (e) => {
+    const width = progressContainer.clientWidth;
+    const clickX = e.offsetX;
+    const duration = audio.duration;
+    audio.currentTime = (clickX / width) * duration;
 });
 </script>
 
