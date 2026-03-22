@@ -31,6 +31,9 @@ button {
     border-radius: 50%;
     cursor: pointer;
 }
+audio {
+    display: none; /* esconde o player nativo */
+}
 </style>
 </head>
 
@@ -40,9 +43,9 @@ button {
     <h2>Ndaiabeat</h2>
     <button id="playBtn">▶</button>
 
-    <!-- TESTE SIMPLES -->
-    <audio id="audio" controls>
+    <audio id="audio">
         <source src="2026-2026-2.mp3" type="audio/mpeg">
+        Seu navegador não suporta áudio.
     </audio>
 </div>
 
@@ -55,8 +58,8 @@ btn.addEventListener("click", function () {
         audio.play().then(() => {
             btn.textContent = "⏸";
         }).catch(err => {
-            console.log(err);
-            alert("Clique diretamente no player abaixo para iniciar.");
+            console.log("Erro ao tentar reproduzir:", err);
+            alert("Clique diretamente no player se o áudio não tocar.");
         });
     } else {
         audio.pause();
